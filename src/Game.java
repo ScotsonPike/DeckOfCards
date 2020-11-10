@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -6,6 +6,7 @@ public class Game {
 	Deck deck;
 	Player player;
 	static int handSize = 3;
+	private ArrayList<Card> cardPile;
 	
 	public Game(Deck deck, Player player) {
 		// Constructor for Game class
@@ -39,7 +40,8 @@ public class Game {
 			player.printHand("faceUp");			
 		}		
 		while(player.cardsRemaining() > 0) {
-			System.out.println("Please Type: ");
+			System.out.println();
+			System.out.println("Select a card to play: ");
 			String input = scanner.nextLine();
 			int index = Integer.parseInt(input);
 			playCard(index);
@@ -62,13 +64,21 @@ public class Game {
 		}
 		player.printHand("hand");
 		player.printHand("faceUp");	
+		
 	}
 	
-	public void playCard(int index) {
-		player.getCardFromHand(index);
-		player.removeCardFromHand(index);
-		player.addCardToHand(deck.getCard());
-		player.sortHand();
+	public void playCard(int index) {				
+		Card card = player.getCardFromHand(index);
+		Card pileCard = cardPile.get(cardPile.size()-1);
+		System.out.println(pileCard.printCard());
+		if(card.getNumber() >= pileCard.getNumber() || card.getNumber() == 7 || card.getNumber() == 10 || card.getNumber() == 1) {
+			player.removeCardFromHand(index);
+			player.addCardToHand(deck.getCard());
+			player.sortHand();
+		} 
+		else {
+			System.out.println("Card too low.");
+		}		
 	}
 	
 	public void changeCard(int handIndex, int faceUpIndex) {
@@ -77,5 +87,8 @@ public class Game {
 		player.getHand().set(handIndex, faceUpCard);
 		player.getFaceUp().set(faceUpIndex, handCard);
 	}
-
+	
+	public void drawCard() {
+		cardPile.add(deck.getCard());
+	}
 }

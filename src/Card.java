@@ -39,6 +39,10 @@ public class Card implements Comparable{
 		return type;
 	}	
 	
+	public String printCard() {
+		return type + " of " + suit;
+	}
+	
 	@Override
 	public int compareTo(Object compareCard) {
 		int compareNum = ((Card)compareCard).getNumber();
