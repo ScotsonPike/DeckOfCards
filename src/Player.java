@@ -30,18 +30,29 @@ public class Player {
 	}
 	
 	
-	public void printHand() {
-		System.out.println("Hand:");
-		for(Card card : hand) {
-			System.out.println(card.type + " of " + card.suit);
+	public void printHand(String type) {
+		if(type.contains("hand") || type.contains("faceUp")) {
+			System.out.println(type + ": ");
+			switch(type) {
+				case "hand":
+					for(Card card : hand) {
+						System.out.print(card.type + " of " + card.suit + "|");
+					}
+					System.out.println();
+					System.out.println();
+					break;
+				case "faceUp":					
+					for(Card card : faceUp) {						
+						System.out.print(card.type + " of " + card.suit + "|");						
+					}
+					System.out.println();
+					System.out.println();
+					break;
+			}
 		}
-	}
-	
-	public void printFaceUp() {
-		System.out.println("Face Up Cards:");
-		for(Card card : faceUp) {
-			System.out.println(card.type + " of " + card.suit);
-		}
+		else {
+			System.out.println("wrong type in printHand method");			
+		}				
 	}
 	
 	public int cardsRemaining() {
