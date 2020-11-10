@@ -40,7 +40,9 @@ public class Game {
 			player.printHand("faceUp");			
 		}		
 		while(player.cardsRemaining() > 0) {
-			System.out.println();			
+			System.out.println();
+			System.out.println("Current top card in play: [NOT DONE YET]");
+			player.printHand("hand");
 			System.out.println("Select a card to play: ");
 			String input = scanner.nextLine();
 			int index = Integer.parseInt(input);
