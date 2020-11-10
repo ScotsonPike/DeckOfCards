@@ -40,7 +40,7 @@ public class Game {
 			player.printHand("faceUp");			
 		}		
 		while(player.cardsRemaining() > 0) {
-			System.out.println();
+			System.out.println();			
 			System.out.println("Select a card to play: ");
 			String input = scanner.nextLine();
 			int index = Integer.parseInt(input);
@@ -69,8 +69,7 @@ public class Game {
 	
 	public void playCard(int index) {				
 		Card card = player.getCardFromHand(index);
-		Card pileCard = cardPile.get(cardPile.size()-1);
-		System.out.println(pileCard.printCard());
+		Card pileCard = cardPile.get(cardPile.size()-1);		
 		if(card.getNumber() >= pileCard.getNumber() || card.getNumber() == 7 || card.getNumber() == 10 || card.getNumber() == 1) {
 			player.removeCardFromHand(index);
 			player.addCardToHand(deck.getCard());
