@@ -36,14 +36,14 @@ public class Player {
 			switch(type) {
 				case "hand":
 					for(Card card : hand) {
-						System.out.print(card.type + " of " + card.suit + "|");
+						System.out.print(card.type + " of " + card.suit + " | ");
 					}
 					System.out.println();
 					System.out.println();
 					break;
 				case "faceUp":					
 					for(Card card : faceUp) {						
-						System.out.print(card.type + " of " + card.suit + "|");						
+						System.out.print(card.type + " of " + card.suit + " | ");						
 					}
 					System.out.println();
 					System.out.println();
