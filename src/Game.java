@@ -8,14 +8,18 @@ public class Game {
 	static int handSize = 3;
 	
 	public Game(Deck deck, Player player) {
+		// Constructor for Game class
 		this.deck = deck;
 		this.player = player;
+		
 	}
 	
 	public void play(){
+		// Main game loop method
 		System.out.println("-- NEW GAME STARTED -- WELCOME! --");
 		Scanner scanner = new Scanner(System.in);
 		while(true) {
+			//Loop while arranging cards in hand and faceUp cards			
 			System.out.println("Swap a card in your hand with a face up card.");
 			System.out.println("Do this in the form 'number space number'.");
 			System.out.println("For example, to swap the first card in your hand with the second face up card, type '1 2'.");
