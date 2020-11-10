@@ -13,21 +13,23 @@ public class Game {
 	}
 	
 	public void play(){
+		System.out.println("-- NEW GAME STARTED -- WELCOME! --");
 		Scanner scanner = new Scanner(System.in);
 		while(true) {
-			System.out.println("Please select card in hand (0-2): ");
+			System.out.println("Swap a card in your hand with a face up card.");
+			System.out.println("Do this in the form 'number space number'.");
+			System.out.println("For example, to swap the first card in your hand with the second face up card, type '1 2'.");
+			System.out.println("When you are done swapping, type 'exit': ");
 			String input = scanner.nextLine();			
 			String exit = "exit";
 			if(input.equalsIgnoreCase(exit)) {
 				break;
 			}
-			else {
+			else {				
 				String[] inputArr = input.split(" ");
-				System.out.println("Please select card in deck to swap with (0-2): ");
-				System.out.println();
 				int handIndex = Integer.parseInt(inputArr[0]);
 				int faceUpIndex = Integer.parseInt(inputArr[1]);
-				changeCard(handIndex, faceUpIndex);		
+				changeCard((handIndex - 1), (faceUpIndex - 1));		
 			}			
 			player.printHand("hand");
 			player.printHand("faceUp");			
