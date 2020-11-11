@@ -1,9 +1,16 @@
 
+/*
+ * The Card class represents a playing card. These objects are
+ * instantiated by the Deck class. Ace's are high, the number 
+ * field is used to compare cards.
+ * */
+
 public class Card implements Comparable{
 	
 	String suit;
 	int number;
 	String type;
+	String magic;
 	
 	public Card(String suit, int number) {
 		this.suit = suit;
@@ -21,6 +28,10 @@ public class Card implements Comparable{
 			case 13:
 				type = "King";
 				break;
+		}
+		if(number == 1) { 
+			// Ace is high
+			number = 14;
 		}
 		if(number > 1 && number < 11) {
 			type = Integer.toString(number);

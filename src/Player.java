@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+/* The Player class contains a player's three hands, hand, faceUp
+ * and faceDown are ArrayLists that contain a set of three cards each.
+ * These arrays are accessed by the Game class to add cards and print 
+ * the objects inside.
+ * */
 public class Player {
 	
 	private static ArrayList<Card> hand;
@@ -85,5 +90,14 @@ public class Player {
 	
 	public void removeCardFromDown(int index) {
 		faceDown.remove(index);
+	}
+
+	public boolean canPlayerPlay(Card topCard) {
+		for(Card card : hand) {
+			if(card.number >= topCard.number) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
