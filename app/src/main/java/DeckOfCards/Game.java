@@ -50,7 +50,7 @@ public class Game {
 			System.out.println("Select a card to play: ");
 			String input = scanner.nextLine();
 			int index = Integer.parseInt(input);
-			if(between(index, 1, 3)) {
+			if(between(index, 1, player.getHandSize())) {
 				playCard(index);
 			}
 			else {

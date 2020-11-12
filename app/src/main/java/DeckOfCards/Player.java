@@ -88,7 +88,7 @@ public class Player {
 		faceDown.add(card);
 	}
 	
-	public void removeCardFromDown(int index) {
+	public void removeCardFromFaceDown(int index) {
 		faceDown.remove(index);
 	}
 
@@ -99,5 +99,9 @@ public class Player {
 			}
 		}
 		return false;
+	}
+	
+	public int getHandSize() {
+		return hand.size();
 	}
 }
