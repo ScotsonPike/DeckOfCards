@@ -11,6 +11,7 @@ public class Card implements Comparable{
 	private int number;
 	private String type;
 	private Magic magic = null;
+	private boolean magicInUse = false;
 	
 	public Card(Suit suit, int number) {
 		this.suit = suit;
@@ -20,8 +21,20 @@ public class Card implements Comparable{
 				type = "Ace";
 				setNumber(14);
 				break;
-			//case 2:				
-				//magic = magic.startAgain;
+			case 2:				
+				magic = Magic.startAgain;
+				break;
+			case 7:
+				magic = Magic.seeThrough;
+				break;
+			case 8:
+				magic = Magic.missAGo;
+				break;
+			case 9: 
+				magic = Magic.playBelow;
+				break;
+			case 10:
+				magic = Magic.burn;
 			case 11:
 				type = "Jack";
 				break;
@@ -32,13 +45,21 @@ public class Card implements Comparable{
 				type = "King";
 				break;
 		}
-//		if(number == 1) { 
-//			// Ace is high
-//			System.out.println("Ace");
-//			number = 14;
-//		}
 		if(number > 1 && number < 11) {
 			type = Integer.toString(number);
+		}
+	}
+	
+	public boolean getMagicInUse() {
+		return magicInUse;
+	}
+	
+	public void flipMagicInUse() {
+		if(magicInUse == false) {
+			magicInUse = true;
+		}
+		else {
+			magicInUse = false;
 		}
 	}
 	

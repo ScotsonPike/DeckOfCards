@@ -24,6 +24,7 @@ public class Game {
 	}
 	
 	public void deal() {
+		// 
 		deck.createDeck();
 		deck.shuffle();
 		for(int i = 0; i < handSize; i++) {
@@ -83,18 +84,29 @@ public class Game {
 			System.out.println("Select a card to play: ");
 			String input = scanner.nextLine();
 			int index = Integer.parseInt(input);
-			if(between(index, 1, player.getHandSize())) {	
+			//Card playerCard = selectCard();
+			if(between(index, 1, player.getHandSize())) {
+				// Input is within hand size range.
 				index = index-1;
 				Card playerCard = player.getCardFromHand(index);
 				if(checkCard(playerCard, topCard)) {
-					if(playerCard.getNumber() >= topCard.getNumber()) {
+					// Player's hand contains a playable card
+					if(playerCard.getMagic() != null) {
+						System.out.println("Magic here");
+						// Card is magic
+						magicRules(playerCard, topCard, index);					
+					}
+					else if(playerCard.getNumber() >= topCard.getNumber() ) {
+						// Card can be played in order.
 						playCard(index);
 					}
 					else {
+						// Card is too low to be played
 						System.out.println("Too Low");
 					}
 				}
 				else {
+					// Player's hand does not contain a card that can be played, player must pick up
 					pickUp();
 				}
 			}
@@ -106,10 +118,67 @@ public class Game {
 		scanner.close();
 	}
 	
+	private void magicRules(Card playerCard, Card topCard, int index) {		
+		if(playerCard.getMagic().cardIsSequential() == false) {
+			// Magic card can be played out of order
+			playerCard.flipMagicInUse();
+			switch(playerCard.getMagic()) {
+				case startAgain:
+					// start cardPile from 2
+					playCard(index);
+					break;
+				case burn:
+					// Play a burn card (10), empty cardPile, draw a card and select a new card to play.
+					playCard(index);
+					cardPile.clear();
+					cardPile.add(selectCard());
+					break;
+				case seeThrough:
+					// Play a see-through card (7), card's number is equal to previous card.
+					playerCard.flipMagicInUse();
+					playerCard.setNumber(topCard.getNumber());
+					cardPile.add(playerCard);
+					player.removeCardFromHand(index);
+					if(player.getHandSize() < 3) {
+						player.addCardToHand(deck.getCard());
+						player.sortHand();
+					}	
+					break;
+			default:
+				break;
+			}
+		}
+		else if(playerCard.getNumber() >= topCard.getNumber() ) {
+		// Card can be played in order.
+			playerCard.flipMagicInUse();
+			playCard(index);
+		}
+	}
+	
+	private Card selectCard() {
+		// Select any card from the players hand to play.
+		Card playerCard = null;
+		player.sortHand();
+		player.printHand("hand");
+		System.out.println("Select a card to play: ");
+		String input = scanner.nextLine();
+		int index = Integer.parseInt(input);
+		while(playerCard == null) {
+			if(between(index, 1, player.getHandSize())) {
+				// Input is within hand size range.
+				index = index-1;
+				playerCard = player.getCardFromHand(index);
+				player.removeCardFromHand(index);
+				player.addCardToHand(deck.getCard());
+			}
+		}		
+		return playerCard;
+	}
+
 	public boolean checkCard(Card card, Card topCard) {
 		if(card.getMagic() != null) {
 			return true; //play card
-		}
+		}		
 		if(player.canPlayerPlay(topCard)) {		
 			return true; //play card		
 		} 

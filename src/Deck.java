@@ -18,16 +18,16 @@ public class Deck {
 			Suit suit = null;
 			switch(i) {
 			  case 0:
-			    suit = suit.Spades;
+			    suit = Suit.Spades;
 			    break;
 			  case 1:
-				suit = suit.Clubs;
+				suit = Suit.Clubs;
 			    break;
 			  case 2:
-				suit = suit.Hearts;
+				suit = Suit.Hearts;
 				break;
 			  case 3:
-				suit = suit.Diamonds;
+				suit = Suit.Diamonds;
 				break;		    
 			}			
 			for(int j = 0; j < numberOfCards/4; j++) {

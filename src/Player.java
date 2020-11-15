@@ -94,7 +94,6 @@ public class Player {
 
 	public boolean canPlayerPlay(Card topCard) {
 		for(Card card : hand) {
-			System.out.print(card.getNumber() + "vs" + topCard.getNumber());
 			if(card.getNumber() >= topCard.getNumber()) {				
 				return true;
 			}
