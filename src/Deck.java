@@ -15,19 +15,19 @@ public class Deck {
 	
 	public void createDeck() {
 		for(int i = 0; i < 4; i++) {
-			String suit = "";
+			Suit suit = null;
 			switch(i) {
 			  case 0:
-			    suit = "Spades";
+			    suit = suit.Spades;
 			    break;
 			  case 1:
-				suit = "Clubs";
+				suit = suit.Clubs;
 			    break;
 			  case 2:
-				suit = "Hearts";
+				suit = suit.Hearts;
 				break;
 			  case 3:
-				suit = "Diamonds";
+				suit = suit.Diamonds;
 				break;		    
 			}			
 			for(int j = 0; j < numberOfCards/4; j++) {

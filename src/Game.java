@@ -13,12 +13,14 @@ public class Game {
 	Player player;
 	static int handSize = 3;
 	private ArrayList<Card> cardPile;
+	private Scanner scanner;
 	
 	public Game(Deck deck, Player player) {
 		// Constructor for Game class
 		this.deck = deck;
 		this.player = player;		
 		cardPile = new ArrayList<>();
+		scanner = new Scanner(System.in);
 	}
 	
 	public void deal() {
@@ -36,32 +38,7 @@ public class Game {
 		cardPile.add(deck.getCard());		
 	}
 	
-	public void play(){
-		// Main game loop method
-		System.out.println("-- NEW GAME STARTED -- WELCOME! --");
-		Scanner scanner = new Scanner(System.in);
-		handSetUp(scanner);
-		while(player.cardsRemaining() > 0) {
-			System.out.println();
-			Card topCard = getTopCard();
-			String topCardStr = topCard.printCard();
-			System.out.println("Current top card in play: " + topCardStr);
-			player.printHand("hand");
-			System.out.println("Select a card to play: ");
-			String input = scanner.nextLine();
-			int index = Integer.parseInt(input);
-			if(between(index, 1, player.getHandSize())) {
-				playCard(index);
-			}
-			else {
-				System.out.println("Invalid input.");
-			}			
-		}
-		System.out.println("Game over, man! Game over!");
-		scanner.close();
-	}
-	
-	public void handSetUp(Scanner scanner) {
+	public void handSetUp() {
 		//Loop while arranging cards in hand and faceUp cards
 		System.out.println("Swap a card in your hand with a face up card.");
 		System.out.println("Do this in the form 'number space number'.");
@@ -80,7 +57,8 @@ public class Game {
 					String[] inputArr = input.split(" ");
 					int handIndex = Integer.parseInt(inputArr[0]);
 					int faceUpIndex = Integer.parseInt(inputArr[1]);
-					if(between(handIndex, 1, 3) && between(faceUpIndex, 1, 3)) {
+					int handSize = player.getHandSize();
+					if(between(handIndex, 1, 3) && between(faceUpIndex, 1, handSize)) {
 						changeCard((handIndex - 1), (faceUpIndex - 1));	
 					}
 					else {
@@ -94,24 +72,57 @@ public class Game {
 		}		
 	}
 	
-	public void playCard(int index) {	
-		index = index-1;
-		Card card = player.getCardFromHand(index);
-		Card topCard = cardPile.get(cardPile.size()-1);	
-		if(player.canPlayerPlay(topCard)) {
-			if(card.getNumber() >= topCard.getNumber()) {
-				cardPile.add(card);
-				player.removeCardFromHand(index);
-				player.addCardToHand(deck.getCard());
-				player.sortHand();
+	public void play(){
+		// Main game loop method
+		System.out.println("-- NEW GAME STARTED -- WELCOME! --");
+		while(player.cardsRemaining() > 0) {
+			Card topCard = getTopCard();
+			System.out.println("\nCurrent top card in play: " + topCard.printCard());
+			player.sortHand();
+			player.printHand("hand");
+			System.out.println("Select a card to play: ");
+			String input = scanner.nextLine();
+			int index = Integer.parseInt(input);
+			if(between(index, 1, player.getHandSize())) {	
+				index = index-1;
+				Card playerCard = player.getCardFromHand(index);
+				if(checkCard(playerCard, topCard)) {
+					if(playerCard.getNumber() >= topCard.getNumber()) {
+						playCard(index);
+					}
+					else {
+						System.out.println("Too Low");
+					}
+				}
+				else {
+					pickUp();
+				}
 			}
 			else {
-				System.out.println("Card too low");
-			}
+				System.out.println("Invalid input.");
+			}			
+		}
+		System.out.println("Game over, man! Game over!");
+		scanner.close();
+	}
+	
+	public boolean checkCard(Card card, Card topCard) {
+		if(card.getMagic() != null) {
+			return true; //play card
+		}
+		if(player.canPlayerPlay(topCard)) {		
+			return true; //play card		
 		} 
-		else {
-			pickUp();
-		}		
+		return false; //pickUp
+	}
+	
+	public void playCard(int index) {
+		cardPile.add(player.getCardFromHand(index));
+		player.removeCardFromHand(index);
+		if(player.getHandSize() < 3) {
+			player.addCardToHand(deck.getCard());
+			player.sortHand();
+		}			
 	}
 	
 	public void changeCard(int handIndex, int faceUpIndex) {
@@ -132,9 +143,12 @@ public class Game {
 	}
 	
 	public void pickUp() {
+		System.out.println("You cannot beat " + cardPile.get(cardPile.size()-1).printCard() + ", Player pick up");
 		for(Card card : cardPile) {
 			player.addCardToHand(card);
-		}		
+		}	
+		cardPile.clear();
+		cardPile.add(deck.getCard());
 	}
 	
 	public boolean between(int i, int minValueInclusive, int maxValueInclusive) {

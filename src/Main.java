@@ -5,6 +5,7 @@ public class Main {
 		Player player = new Player();
 		Game game = new Game(deck, player);	
 		game.deal();
+		game.handSetUp();
 		game.play();
 	}	
 }

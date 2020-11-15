@@ -41,14 +41,14 @@ public class Player {
 			switch(type) {
 				case "hand":
 					for(Card card : hand) {
-						System.out.print(card.type + " of " + card.suit + " | ");
+						System.out.print(card.getType() + " of " + card.getSuit() + " | ");
 					}
 					System.out.println();
 					System.out.println();
 					break;
 				case "faceUp":					
 					for(Card card : faceUp) {						
-						System.out.print(card.type + " of " + card.suit + " | ");						
+						System.out.print(card.getType() + " of " + card.getSuit() + " | ");						
 					}
 					System.out.println();
 					System.out.println();
@@ -94,7 +94,8 @@ public class Player {
 
 	public boolean canPlayerPlay(Card topCard) {
 		for(Card card : hand) {
-			if(card.number >= topCard.number) {
+			System.out.print(card.getNumber() + "vs" + topCard.getNumber());
+			if(card.getNumber() >= topCard.getNumber()) {				
 				return true;
 			}
 		}
