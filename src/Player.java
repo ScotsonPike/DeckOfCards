@@ -92,9 +92,14 @@ public class Player {
 		faceDown.remove(index);
 	}
 
-	public boolean canPlayerPlay(Card topCard) {
+	public boolean canPlayerPlay(Card topCard, boolean playBelow) {		
 		for(Card card : hand) {
-			if(card.getNumber() >= topCard.getNumber()) {				
+			if(playBelow == true) {
+				if(card.getNumber() <= topCard.getNumber()) {				
+					return true;
+				}
+			}
+			else if(card.getNumber() >= topCard.getNumber()) {				
 				return true;
 			}
 		}

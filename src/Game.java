@@ -9,12 +9,14 @@ import java.util.stream.IntStream;
 
 public class Game {
 	
-	Deck deck;
-	Player player;
-	static int handSize = 3;
+	private Deck deck;
+	private Player player;
+	private static int handSize = 3;
 	private ArrayList<Card> cardPile;
 	private Scanner scanner;
-	
+	private boolean playBelow = false;
+	private boolean missAGo = false;
+		
 	public Game(Deck deck, Player player) {
 		// Constructor for Game class
 		this.deck = deck;
@@ -77,7 +79,7 @@ public class Game {
 		// Main game loop method
 		System.out.println("-- NEW GAME STARTED -- WELCOME! --");
 		while(player.cardsRemaining() > 0) {
-			Card topCard = getTopCard();
+			Card topCard = getTopCard();			
 			System.out.println("\nCurrent top card in play: " + topCard.printCard());
 			player.sortHand();
 			player.printHand("hand");
@@ -92,9 +94,14 @@ public class Game {
 				if(checkCard(playerCard, topCard)) {
 					// Player's hand contains a playable card
 					if(playerCard.getMagic() != null) {
-						System.out.println("Magic here");
 						// Card is magic
 						magicRules(playerCard, topCard, index);					
+					}
+					else if(playBelow == true) {
+						if(playerCard.getNumber() <= topCard.getNumber()){
+							// Card can be played in order.
+							playCard(index);
+						}
 					}
 					else if(playerCard.getNumber() >= topCard.getNumber() ) {
 						// Card can be played in order.
@@ -112,7 +119,13 @@ public class Game {
 			}
 			else {
 				System.out.println("Invalid input.");
-			}			
+			}	
+			if(topCard.getNumber() != 9) {
+				playBelow = false;
+			}
+			if(topCard.getNumber() != 8) {
+				missAGo = false;
+			}
 		}
 		System.out.println("Game over, man! Game over!");
 		scanner.close();
@@ -121,7 +134,6 @@ public class Game {
 	private void magicRules(Card playerCard, Card topCard, int index) {		
 		if(playerCard.getMagic().cardIsSequential() == false) {
 			// Magic card can be played out of order
-			playerCard.flipMagicInUse();
 			switch(playerCard.getMagic()) {
 				case startAgain:
 					// start cardPile from 2
@@ -135,7 +147,6 @@ public class Game {
 					break;
 				case seeThrough:
 					// Play a see-through card (7), card's number is equal to previous card.
-					playerCard.flipMagicInUse();
 					playerCard.setNumber(topCard.getNumber());
 					cardPile.add(playerCard);
 					player.removeCardFromHand(index);
@@ -150,8 +161,20 @@ public class Game {
 		}
 		else if(playerCard.getNumber() >= topCard.getNumber() ) {
 		// Card can be played in order.
-			playerCard.flipMagicInUse();
-			playCard(index);
+			switch(playerCard.getMagic()) {
+				case missAGo:
+					// Play a miss a go card (8)
+					missAGo = true;
+					playCard(index);
+					break;
+				case playBelow:
+					// Play a play below card (9)
+					playBelow = true;
+					playCard(index);
+					break;
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -177,9 +200,11 @@ public class Game {
 
 	public boolean checkCard(Card card, Card topCard) {
 		if(card.getMagic() != null) {
-			return true; //play card
+			if(card.getMagic().cardIsSequential() == false) {
+				return true; //play card
+			}			
 		}		
-		if(player.canPlayerPlay(topCard)) {		
+		if(player.canPlayerPlay(topCard, playBelow)) {		
 			return true; //play card		
 		} 
 		return false; //pickUp
