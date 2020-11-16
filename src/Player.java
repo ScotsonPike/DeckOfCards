@@ -11,8 +11,10 @@ public class Player {
 	private static ArrayList<Card> hand;
 	private static ArrayList<Card> faceUp;
 	private static ArrayList<Card> faceDown;
+	private String name;
 	
-	public Player() {		
+	public Player(String name) {
+		this.setName(name);
 		hand = new ArrayList<>();
 		faceUp = new ArrayList<>();
 		faceDown = new ArrayList<>();
@@ -108,5 +110,19 @@ public class Player {
 	
 	public int getHandSize() {
 		return hand.size();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void printName() {
+		System.out.println("-------------------------------");
+		System.out.println(getName());
+		System.out.println();
 	}
 }
