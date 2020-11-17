@@ -8,9 +8,9 @@ import java.util.Collections;
  * */
 public class Player {
 	
-	private static ArrayList<Card> hand;
-	private static ArrayList<Card> faceUp;
-	private static ArrayList<Card> faceDown;
+	private ArrayList<Card> hand;
+	private ArrayList<Card> faceUp;
+	private ArrayList<Card> faceDown;
 	private String name;
 	
 	public Player(String name) {

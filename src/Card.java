@@ -8,15 +8,16 @@
 public class Card implements Comparable{
 	
 	private Suit suit;
-	private int number;
-	private String type;
-	private Magic magic = null;
-	private boolean magicInUse = false;
+	private int number; //remove, use getters from CardType
+	private String type; //remove
+	private Magic magic = null; //remove
+	private boolean magicInUse = false; //remove (maybe not be needed)
 	
 	public Card(Suit suit, int number) {
 		this.suit = suit;
 		this.number = number;
 		switch(number) {
+			//place in CardType
 			case 1:
 				type = "Ace";
 				setNumber(14);
